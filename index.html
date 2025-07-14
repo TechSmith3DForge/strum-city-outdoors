@@ -36,7 +36,7 @@
         section { width: 80%; max-width: 800px; border: 1px solid limegreen; padding: 15px; border-radius: 5px; background: rgba(0,0,0,0.5); box-shadow: 0 0 10px limegreen; }
         .loading { color: gray; }
         ul { list-style-type: disc; padding-left: 20px; }
-        strong { color: #00ff00; } /* Brighter lime for emphasis */
+        strong { color: #00ff00; }
         footer { text-align: center; margin-top: 20px; }
         footer a { color: limegreen; }
     </style>
@@ -81,10 +81,10 @@
     </footer>
 
     <script>
-        const proxy = 'https://cors-anywhere.herokuapp.com/';
+        const proxy = 'https://api.codetabs.com/v1/proxy?quest=';
 
-        // Dam data - looser parsing for labels
-        fetch(proxy + 'https://lakedata.traweb.net/Livingston.html')
+        // Dam data
+        fetch(proxy + encodeURIComponent('https://lakedata.traweb.net/Livingston.html'))
             .then(res => res.text())
             .then(text => {
                 const parser = new DOMParser();
@@ -109,7 +109,7 @@
             })
             .catch(() => document.querySelector('#dam p').innerHTML = 'Dam data hiding – refresh or blame the net!');
 
-        // Weather with MPH, % rain prob, storms yes/no
+        // Weather
         function getWeather(lat, lon, sectionId) {
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}¤t=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,precipitation_probability,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,weather_code&hourly=temperature_2m,wind_speed_10m,precipitation_probability,weather_code&forecast_days=7&timezone=America%2FChicago`;
             fetch(url)
@@ -128,8 +128,8 @@
                         const date = new Date(daily.time[i]).toLocaleDateString();
                         const dayStart = i * 24;
                         const dayWinds = hourly.wind_speed_10m.slice(dayStart, dayStart + 24).map(kmhToMph);
-                        const windMin = Math.min(...dayWinds).toFixed(1);
-                        const windMax = Math.max(...dayWinds).toFixed(1);
+                        const windMin = Math.min(...dayWinds);
+                        const windMax = Math.max(...dayWinds);
                         html += `<li>${date}: High ${daily.temperature_2m_max[i]}°C / Low ${daily.temperature_2m_min[i]}°C | Rain Prob Max ${daily.precipitation_probability_max[i]}% | Wind Min-Max ${windMin}-${windMax} MPH | Storms: ${isStorm(daily.weather_code[i])}</li>`;
                     }
                     html += `</ul><br><strong>Nightly Summaries (7-11pm):</strong><ul>`;
@@ -161,25 +161,23 @@
         getWeather(30.59, -95.13, 'coldspring');
         getWeather(30.35, -95.56, 'conroe');
 
-        // Offshore: MPH wind, add % rain, storms for nights
+        // Offshore
         Promise.all([
-            fetch(proxy + 'https://www.ndbc.noaa.gov/data/realtime2/42019.txt').then(res => res.text()),
+            fetch(proxy + encodeURIComponent('https://www.ndbc.noaa.gov/data/realtime2/42019.txt')).then(res => res.text()),
             fetch('https://api.open-meteo.com/v1/forecast?latitude=27.91&longitude=-95.35&hourly=wind_speed_10m,wind_direction_10m,precipitation_probability,weather_code&forecast_days=3&timezone=America%2FChicago').then(res => res.json()),
             fetch('https://api.open-meteo.com/v1/marine?latitude=27.91&longitude=-95.35&hourly=wave_height,wind_wave_direction&forecast_days=3&timezone=America%2FChicago').then(res => res.json())
         ]).then(([buoyText, forecastData, waveData]) => {
-            // Real-time
             const lines = buoyText.split('\n');
             const data = lines[2].trim().split(/\s+/);
             const waveHt = data[8];
             const domPd = data[9];
-            const windSpd = (data[6] * 2.23694).toFixed(1); // m/s to MPH
+            const windSpd = (data[6] * 2.23694).toFixed(1);
             const windDir = data[5];
             const gust = (data[7] * 2.23694).toFixed(1);
             const waterTemp = data[12];
             const time = `${data[0]}-${data[1]}-${data[2]} ${data[3]}:${data[4]} UTC`;
             let html = `<strong>Current (Real-Time):</strong><br>Wave Height: ${waveHt} m | Period: ${domPd} s | Wind: ${windSpd} MPH from ${windDir}° (Gust ${gust} MPH) | Water Temp: ${waterTemp}°C (as of ${time}).<br><br>`;
 
-            // 3-night summaries
             html += `<strong>Next 3 Nights (7-11pm):</strong><ul>`;
             const hourlyWind = forecastData.hourly;
             const hourlyWave = waveData.hourly;
@@ -200,7 +198,7 @@
                     const avgWind = (winds.reduce((a, b) => parseFloat(a) + parseFloat(b), 0) / winds.length).toFixed(1);
                     const avgWave = (waveHts.reduce((a, b) => a + b, 0) / waveHts.length).toFixed(1);
                     const avgProb = (probs.reduce((a, b) => a + b, 0) / probs.length).toFixed(1);
-                    const nightDate = new Date(forecastData.daily?.time?.[day] || new Date()).toLocaleDateString();
+                    const nightDate = new Date(hourlyWind.time[day * 24]).toLocaleDateString();  // Fallback date
                     html += `<li>Night of ${nightDate}: Avg Wind ${avgWind} MPH | Avg Wave Height ${avgWave} m | Rain Prob Avg ${avgProb}% | Storms: ${hasStorm ? 'Yes' : 'No'}</li>`;
                 }
             }
