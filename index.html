@@ -6,7 +6,7 @@
     <title>Strum City Outdoors</title>
     <style>
         body {
-            background: url('https://images.unsplash.com/photo-1449452198679-0143af30f4e4?ixlib=rb-4.0.1&auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
+            background: url('https://images.unsplash.com/photo-1449452198679-0143af30f4e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
             background-size: cover;
             color: limegreen;
             font-family: Arial, sans-serif;
@@ -81,7 +81,7 @@
     <script>
         const proxy = 'https://cors-anywhere.herokuapp.com/';
 
-        // Dam data
+        // Dam data - tweaked parsing for robustness
         fetch(proxy + 'https://lakedata.traweb.net/Livingston.html')
             .then(res => res.text())
             .then(text => {
@@ -94,22 +94,23 @@
                     rows.forEach(row => {
                         const cells = row.querySelectorAll('td');
                         if (cells.length >= 2) {
-                            const label = cells[0].textContent.trim();
+                            let label = cells[0].textContent.trim().toLowerCase();
                             const value = cells[1].textContent.trim();
-                            if (label.includes('Elevation')) elevation = value;
-                            if (label.includes('Discharge')) discharge = value;
+                            if (label.includes('elevation')) elevation = value;
+                            if (label.includes('discharge')) discharge = value;
                         }
                     });
-                    time = doc.querySelector('p')?.textContent.match(/As of (.+)/)?.[1] || 'N/A';
+                    const pText = doc.querySelector('p')?.textContent || '';
+                    time = pText.match(/As of (.+)/)?.[1] || 'N/A';
                 }
                 document.querySelector('#dam p').innerHTML = `Reservoir Elevation: ${elevation} | Discharge Rate: ${discharge} (as of ${time}).<br>Tip: High discharge = adventure time!`;
             })
             .catch(() => document.querySelector('#dam p').innerHTML = 'Dam data hiding – refresh or blame the net!');
 
-        // Weather
+        // Weather with wind min/max per day
         function getWeather(lat, lon, sectionId) {
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&hourly=temperature_2m,wind_speed_10m,precipitation&forecast_days=7&timezone=America%2FChicago`;
-            fetch(proxy + url)
+            fetch(url)  // Open-Meteo allows direct fetch, no proxy needed
                 .then(res => res.json())
                 .then(data => {
                     const curr = data.current;
@@ -120,7 +121,11 @@
                     html += `<strong>7-Day Outlook:</strong><br>`;
                     for (let i = 0; i < 7; i++) {
                         const date = new Date(daily.time[i]).toLocaleDateString();
-                        html += `${date}: High ${daily.temperature_2m_max[i]}°C / Low ${daily.temperature_2m_min[i]}°C / Precip ${daily.precipitation_sum[i]} mm<br>`;
+                        const dayStart = i * 24;
+                        const dayWinds = hourly.wind_speed_10m.slice(dayStart, dayStart + 24);
+                        const windMin = Math.min(...dayWinds).toFixed(1);
+                        const windMax = Math.max(...dayWinds).toFixed(1);
+                        html += `${date}: High ${daily.temperature_2m_max[i]}°C / Low ${daily.temperature_2m_min[i]}°C / Precip ${daily.precipitation_sum[i]} mm / Wind Min-Max ${windMin}-${windMax} km/h<br>`;
                     }
                     html += `<br><strong>Nightly Summaries (7-11pm):</strong><br>`;
 
@@ -149,21 +154,47 @@
         getWeather(30.59, -95.13, 'coldspring');
         getWeather(30.35, -95.56, 'conroe');
 
-        // Offshore
-        fetch(proxy + 'https://www.ndbc.noaa.gov/data/realtime2/42019.txt')
-            .then(res => res.text())
-            .then(text => {
-                const lines = text.split('\n');
-                const data = lines[2].trim().split(/\s+/);
-                const waveHt = data[8];
-                const domPd = data[9];
-                const windSpd = data[6];
-                const windDir = data[5];
-                const gust = data[7];
-                const waterTemp = data[12];
-                const time = `${data[0]}-${data[1]}-${data[2]} ${data[3]}:${data[4]} UTC`;
-                document.querySelector('#freeport p').innerHTML = `Wave Height: ${waveHt} m | Period: ${domPd} s | Wind: ${windSpd} m/s from ${windDir}° (Gust ${gust} m/s) | Water Temp: ${waterTemp}°C (as of ${time}).<br>Surf's up... or down?`;
-            }).catch(() => document.querySelector('#freeport p').innerHTML = 'Buoy bailed – check later!');
+        // Offshore: Real-time + 3-night forecast summaries (wind from forecast, waves from marine)
+        Promise.all([
+            fetch(proxy + 'https://www.ndbc.noaa.gov/data/realtime2/42019.txt').then(res => res.text()),
+            fetch('https://api.open-meteo.com/v1/forecast?latitude=27.91&longitude=-95.35&hourly=wind_speed_10m,wind_direction_10m&daily=wind_speed_10m_max&forecast_days=3&timezone=America%2FChicago').then(res => res.json()),
+            fetch('https://api.open-meteo.com/v1/marine?latitude=27.91&longitude=-95.35&hourly=wave_height,wind_wave_direction&forecast_days=3&timezone=America%2FChicago').then(res => res.json())
+        ]).then(([buoyText, windData, waveData]) => {
+            // Real-time from buoy
+            const lines = buoyText.split('\n');
+            const data = lines[2].trim().split(/\s+/);
+            const waveHt = data[8];
+            const domPd = data[9];
+            const windSpd = data[6];
+            const windDir = data[5];
+            const gust = data[7];
+            const waterTemp = data[12];
+            const time = `${data[0]}-${data[1]}-${data[2]} ${data[3]}:${data[4]} UTC`;
+            let html = `Current (Real-Time): Wave Height ${waveHt} m | Period ${domPd} s | Wind ${windSpd} m/s from ${windDir}° (Gust ${gust} m/s) | Water Temp ${waterTemp}°C (as of ${time}).<br><br>`;
+
+            // 3-night summaries
+            html += `<strong>Next 3 Nights Summaries (7-11pm):</strong><br>`;
+            const hourlyWind = windData.hourly;
+            const hourlyWave = waveData.hourly;
+            for (let day = 0; day < 3; day++) {
+                let winds = [], waveHts = [];
+                const dayStart = day * 24;
+                for (let h = 19; h <= 23; h++) {
+                    const idx = dayStart + h;
+                    if (idx < hourlyWind.time.length) {
+                        winds.push(hourlyWind.wind_speed_10m[idx]);
+                        waveHts.push(hourlyWave.wave_height[idx]);
+                    }
+                }
+                if (winds.length > 0) {
+                    const avgWind = (winds.reduce((a, b) => a + b, 0) / winds.length).toFixed(1);
+                    const avgWave = (waveHts.reduce((a, b) => a + b, 0) / waveHts.length).toFixed(1);
+                    const nightDate = new Date(windData.daily.time[day]).toLocaleDateString();
+                    html += `Night of ${nightDate}: Avg Wind ${avgWind} km/h | Avg Wave Height ${avgWave} m<br>`;
+                }
+            }
+            document.querySelector('#freeport p').innerHTML = html;
+        }).catch(() => document.querySelector('#freeport p').innerHTML = 'Offshore data dipped out – refresh!');
     </script>
 </body>
 </html>
