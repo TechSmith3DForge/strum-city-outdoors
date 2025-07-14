@@ -6,7 +6,7 @@
     <title>Strum City Outdoors</title>
     <style>
         body {
-            background: url('https://images.unsplash.com/photo-1449452198679-0143af30f4e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background: url('https://images.unsplash.com/photo-1449452198679-0143af30f4e4?ixlib=rb-4.0.1&auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
             background-size: cover;
             color: limegreen;
             font-family: Arial, sans-serif;
@@ -32,8 +32,8 @@
         }
         nav a:hover, nav a.active { background: limegreen; color: black; animation: flash 1s infinite; }
         @keyframes flash { 50% { opacity: 0.5; } }
-        main { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        section { border: 1px solid limegreen; padding: 15px; border-radius: 5px; background: rgba(0,0,0,0.5); }
+        main { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        section { width: 80%; max-width: 800px; border: 1px solid limegreen; padding: 15px; border-radius: 5px; background: rgba(0,0,0,0.5); box-shadow: 0 0 10px limegreen; }
         .loading { color: gray; }
         footer { text-align: center; margin-top: 20px; }
         footer a { color: limegreen; }
@@ -79,8 +79,9 @@
     </footer>
 
     <script>
-        // Dam data: Scrape with CORS proxy
         const proxy = 'https://cors-anywhere.herokuapp.com/';
+
+        // Dam data
         fetch(proxy + 'https://lakedata.traweb.net/Livingston.html')
             .then(res => res.text())
             .then(text => {
@@ -105,9 +106,10 @@
             })
             .catch(() => document.querySelector('#dam p').innerHTML = 'Dam data hiding – refresh or blame the net!');
 
-        // Weather: Keep as is (should load, Open-Meteo is CORS-friendly)
+        // Weather
         function getWeather(lat, lon, sectionId) {
-            fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}¤t=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&hourly=temperature_2m,wind_speed_10m,precipitation&forecast_days=7&timezone=America%2FChicago`)
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&hourly=temperature_2m,wind_speed_10m,precipitation&forecast_days=7&timezone=America%2FChicago`;
+            fetch(proxy + url)
                 .then(res => res.json())
                 .then(data => {
                     const curr = data.current;
@@ -147,8 +149,8 @@
         getWeather(30.59, -95.13, 'coldspring');
         getWeather(30.35, -95.56, 'conroe');
 
-        // Offshore: Keep as is (NDBC txt should work)
-        fetch('https://www.ndbc.noaa.gov/data/realtime2/42019.txt')
+        // Offshore
+        fetch(proxy + 'https://www.ndbc.noaa.gov/data/realtime2/42019.txt')
             .then(res => res.text())
             .then(text => {
                 const lines = text.split('\n');
