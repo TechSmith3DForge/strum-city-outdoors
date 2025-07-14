@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strum City Outdoors</title>
+    <style>
+        body { background: black; color: limegreen; font-family: Arial, sans-serif; padding: 20px; }
+        h1 { text-align: center; color: limegreen; }
+        section { margin: 20px 0; border: 1px solid limegreen; padding: 10px; }
+        .loading { color: gray; }
+    </style>
+</head>
+<body>
+    <h1>Strum City Outdoors</h1>
+    <p>Your one-stop for Texas vibes – because who needs Netflix when there's nature drama?</p>
+
+    <section id="dam">
+        <h2>Trinity River Lake Livingston Dam Release Flow Rate</h2>
+        <p class="loading">Loading flow rate...</p>
+    </section>
+
+    <section id="coldspring">
+        <h2>Weather for Coldspring, TX</h2>
+        <p class="loading">Loading weather...</p>
+    </section>
+
+    <section id="conroe">
+        <h2>Weather for Lake Conroe, TX</h2>
+        <p class="loading">Loading weather...</p>
+    </section>
+
+    <section id="freeport">
+        <h2>Offshore Wave & Wind Conditions - Freeport, TX (Buoy 42019)</h2>
+        <p class="loading">Loading offshore data...</p>
+    </section>
+
+    <script>
+        // Fetch dam flow (USGS API - site below dam)
+        fetch('https://waterservices.usgs.gov/nwis/iv/?format=json&sites=08066192&parameterCd=00060&siteStatus=all')
+            .then(res => res.json())
+            .then(data => {
+                const flow = data.value.timeSeries[0].values[0].value[0].value;
+                const time = new Date(data.value.timeSeries[0].values[0].value[0].dateTime).toLocaleString();
+                document.querySelector('#dam p').innerHTML = `Current flow: ${flow} cfs (as of ${time}).`;
+            })
+            .catch(() => document.querySelector('#dam p').innerHTML = 'Flow data MIA – try later!');
+
+        // Weather function (Open-Meteo API - free, no key)
+        function getWeather(lat, lon, sectionId) {
+            fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m`)
+                .then(res => res.json())
+                .then(data => {
+                    const curr = data.current;
+                    document.querySelector(`#${sectionId} p`).innerHTML = `Temp: ${curr.temperature_2m}°C | Humidity: ${curr.relative_humidity_2m}% | Wind: ${curr.wind_speed_10m} km/h from ${curr.wind_direction_10m}°`;
+                })
+                .catch(() => document.querySelector(`#${sectionId} p`).innerHTML = 'Weather ghosted us – refresh!');
+        }
+        getWeather(30.59, -95.13, 'coldspring'); // Coldspring
+        getWeather(30.35, -95.56, 'conroe'); // Lake Conroe
+
+        // Offshore buoy (NDBC text parse)
+        fetch('https://www.ndbc.noaa.gov/data/realtime2/42019.txt')
+            .then(res => res.text())
+            .then(text => {
+                const lines = text.split('\n');
+                const data = lines[2].trim().split(/\s+/); // Latest data line
+                const waveHt = data[8]; // WVHT in m
+                const windSpd = data[6]; // WSPD in m/s
+                const windDir = data[5]; // WDIR in deg
+                const time = `${data[0]}-${data[1]}-${data[2]} ${data[3]}:${data[4]} UTC`;
+                document.querySelector('#freeport p').innerHTML = `Wave Height: ${waveHt} m | Wind: ${windSpd} m/s from ${windDir}° (as of ${time}).`;
+            })
+            .catch(() => document.querySelector('#freeport p').innerHTML = 'Buoy\'s on vacation – check back!');
+    </script>
+</body>
+</html>
