@@ -1,210 +1,208 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strum City Outdoors</title>
-    <style>
-        body {
-            background: url('https://images.unsplash.com/photo-1449452198679-0143af30f4e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
-            background-size: cover;
-            color: limegreen;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            margin: 0;
-            position: relative;
-        }
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-        }
-        header { text-align: center; padding: 20px; background: rgba(0,0,0,0.7); border-bottom: 2px solid limegreen; }
-        header h1 { margin: 0; }
-        header p { font-style: italic; }
-        nav { display: flex; justify-content: center; margin: 10px 0; position: sticky; top: 0; background: black; padding: 10px; z-index: 1; }
-        nav a {
-            color: limegreen; text-decoration: none; padding: 10px 20px; margin: 0 5px;
-            border: 1px solid limegreen; border-radius: 5px;
-            transition: background 0.3s;
-        }
-        nav a:hover, nav a.active { background: limegreen; color: black; animation: flash 1s infinite; }
-        @keyframes flash { 50% { opacity: 0.5; } }
-        main { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        section { width: 80%; max-width: 800px; border: 1px solid limegreen; padding: 15px; border-radius: 5px; background: rgba(0,0,0,0.5); box-shadow: 0 0 10px limegreen; }
-        .loading { color: gray; }
-        ul { list-style-type: disc; padding-left: 20px; }
-        strong { color: #00ff00; }
-        footer { text-align: center; margin-top: 20px; }
-        footer a { color: limegreen; }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Strum City Outdoors</h1>
-        <p>Message from Captain Johnny: "Ahoy, adventurers! The water's callin', but remember: Fish don't bite if you're late – gear up and let's make waves!"</p>
-    </header>
 
-    <nav>
-        <a href="#dam" class="active">Dam Info</a>
-        <a href="#coldspring">Coldspring Weather</a>
-        <a href="#conroe">Lake Conroe Weather</a>
-        <a href="#freeport">Freeport Offshore</a>
-    </nav>
 
-    <main>
-        <section id="dam">
-            <h2>Trinity River Lake Livingston Dam</h2>
-            <p class="loading">Loading dam data...</p>
-        </section>
 
-        <section id="coldspring">
-            <h2>Weather for Coldspring, TX</h2>
-            <p class="loading">Loading weather...</p>
-        </section>
+  
+  
+  StrumCity Outdoors - Weather & Lake Info
+  
+  
+  
+    body {
+      background-image: linear-gradient(to bottom, rgba(0, 128, 0, 0.5), rgba(0, 0, 255, 0.3)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    .partner-card {
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .partner-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .partners-section {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1622239505860-3c83a7a923d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+    .header-banner {
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(50, 205, 50, 0.5)), url('https://images.unsplash.com/photo-1519046921377-7e22b27d4087?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+    .radar-iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+    }
+  
 
-        <section id="conroe">
-            <h2>Weather for Lake Conroe, TX</h2>
-            <p class="loading">Loading weather...</p>
-        </section>
 
-        <section id="freeport">
-            <h2>Offshore Conditions - Freeport, TX (Buoy 42019)</h2>
-            <p class="loading">Loading offshore data...</p>
-        </section>
-    </main>
+  
+  
+    StrumCity Outdoors
+    Captain Johnny’s Tournament Weather Check-in!
+  
 
-    <footer>
-        <p>Powered by nature & code. Ready for bowfishing thrills? Book a charter at <a href="https://strumcitybowfishing.com" target="_blank">Strum City Bowfishing</a> – arrows fly, fish fry, legends are made!</p>
-    </footer>
+  
+  
+    Our Partners & Affiliates
+    Discover our trusted partners for outdoor adventures and unique creations!
+    
+      
+        StrumCity Bowfishing
+        Join thrilling bowfishing adventures on the water!
+      
+      
+        Custom Wood Creations
+        Handcrafted woodwork for your home and beyond.
+      
+      
+        TechSmith 3D Forge
+        Cutting-edge 3D printing and tech solutions.
+      
+      
+        StrumCity Outdoors
+        Your go-to for weather and lake updates!
+      
+    
+  
 
-    <script>
-        const proxy = 'https://api.codetabs.com/v1/proxy?quest=';
+  
+  
+    Click here for Lake Livingston Dam flow rate
+  
 
-        // Dam data
-        fetch(proxy + encodeURIComponent('https://lakedata.traweb.net/Livingston.html'))
-            .then(res => res.text())
-            .then(text => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(text, 'text/html');
-                const tables = doc.querySelectorAll('table');
-                let elevation = 'N/A', discharge = 'N/A', time = 'N/A';
-                if (tables.length > 0) {
-                    const rows = tables[0].querySelectorAll('tr');
-                    rows.forEach(row => {
-                        const cells = row.querySelectorAll('td');
-                        if (cells.length >= 2) {
-                            let label = cells[0].textContent.trim().toLowerCase();
-                            const value = cells[1].textContent.trim();
-                            if (label.includes('elevation') || label.includes('pool')) elevation = value;
-                            if (label.includes('discharge') || label.includes('outflow')) discharge = value;
-                        }
-                    });
-                    const pText = doc.querySelector('p')?.textContent || '';
-                    time = pText.match(/As of (.+)/)?.[1] || 'N/A';
-                }
-                document.querySelector('#dam p').innerHTML = `<strong>Reservoir Elevation:</strong> ${elevation}<br><strong>Discharge Rate:</strong> ${discharge} (as of ${time}).<br><em>Tip: High discharge = adventure time!</em>`;
-            })
-            .catch(() => document.querySelector('#dam p').innerHTML = 'Dam data hiding – refresh or blame the net!');
+  
+  
+    
+    
+      Lake Conroe, TX Weather
+      
+        Current Conditions
+        Loading current conditions...
+        More details
+      
+      
+        24-Hour Radar Loop
+        
+      
+      7-Day Forecast
+      
+        
+          Tuesday, Jul 15: Mostly sunny, high 94°F, low 73°F, S wind 5-10 mph, 0% chance of showers. Evening (7pm-11pm): Partly cloudy, 73°F, light winds.
+        
+        
+          Wednesday, Jul 16: Mostly sunny, high 94°F, low 74°F, S wind 5-10 mph, 0% chance of showers. Evening: Partly cloudy, 74°F, calm.
+        
+        
+          Thursday, Jul 17: Sunny, high 98°F, low 74°F, light winds, 0% chance of showers. Evening: Clear, 74°F, light winds.
+        
+        
+          Friday, Jul 18: Mostly sunny, high 96°F, low 74°F, S wind 5-10 mph, 20% chance of showers. Evening: Mostly clear, 74°F, light winds.
+        
+        
+          Saturday, Jul 19: Mostly sunny, high 94°F, low 73°F, S wind 5-10 mph, 0% chance of showers. Evening: Partly cloudy, 73°F, light winds.
+        
+        
+          Sunday, Jul 20: Partly sunny, high 93°F, low 73°F, S wind 5-10 mph, 30% chance of showers. Evening: Partly cloudy, 73°F, light winds.
+        
+        
+          Monday, Jul 21: Mostly sunny, high 94°F, low 74°F, S wind 5-10 mph, 40% chance of showers. Evening: Mostly clear, 74°F, light winds.
+        
+      
+    
 
-        // Weather
-        function getWeather(lat, lon, sectionId) {
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}¤t=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,precipitation_probability,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,weather_code&hourly=temperature_2m,wind_speed_10m,precipitation_probability,weather_code&forecast_days=7&timezone=America%2FChicago`;
-            fetch(url)
-                .then(res => res.json())
-                .then(data => {
-                    const curr = data.current;
-                    const daily = data.daily;
-                    const hourly = data.hourly;
-                    const kmhToMph = (kmh) => (kmh * 0.621371).toFixed(1);
-                    const isStorm = (code) => code >= 95 && code <= 99 ? 'Yes' : 'No';
+<!-- Coldspring Weather -->
+<section class="mb-12 bg-white bg-opacity-90 rounded-lg shadow-lg p-6 border-2 border-gradient-to-r from-black to-lime-500">
+  <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Dancing Script', cursive;">Coldspring, TX Weather</h2>
+  <div class="mb-4">
+    <h3 class="text-xl font-medium">Current Conditions</h3>
+    <p id="coldspring-current">Loading current conditions...</p>
+    <a href="https://www.wunderground.com/weather/us/tx/coldspring" class="text-blue-600 hover:underline">More details</a>
+  </div>
+  <div class="mb-4">
+    <h3 class="text-xl font-medium">24-Hour Radar Loop</h3>
+    <iframe class="radar-iframe" src="https://www.wunderground.com/maps/radar/current/hgx?lat=30.5909&lon=-95.1292&zoom=10"></iframe>
+  </div>
+  <h3 class="text-xl font-medium mb-2">7-Day Forecast</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coldspring-forecast">
+    <div class="bg-orange-100 p-4 rounded">
+      <p><strong>Tuesday, Jul 15:</strong> Partly cloudy, high 88°F, low 73°F, S wind 10-15 mph, 0% chance of showers. Evening (7pm-11pm): Partly cloudy, 73°F, SSE winds 5-10 mph.</p>
+    </div>
+    <div class="bg-green-100 p-4 rounded">
+      <p><strong>Wednesday, Jul 16:</strong> Partly cloudy, high 89°F, low 72°F, S wind 5-10 mph, 30% chance of showers. Evening: Cloudy, 72°F, S winds 5-10 mph.</p>
+    </div>
+    <div class="bg-green-100 p-4 rounded">
+      <p><strong>Thursday, Jul 17:</strong> Partly cloudy, high 88°F, low 70°F, S wind 5-10 mph, 40% chance of showers. Evening: Cloudy, 70°F, S winds 5-10 mph.</p>
+    </div>
+    <div class="bg-green-100 p-4 rounded">
+      <p><strong>Friday, Jul 18:</strong> Partly cloudy, high 91°F, low 71°F, S wind 5-10 mph, 0% chance of showers. Evening: Mostly clear, 71°F, light winds.</p>
+    </div>
+    <div class="bg-green-100 p-4 rounded">
+      <p><strong>Saturday, Jul 19:</strong> Mostly sunny, high 90°F, low 71°F, SSE wind 5-10 mph, 0% chance of showers. Evening: Clear, 71°F, SSE winds 5-10 mph.</p>
+    </div>
+    <div class="bg-green-100 p-4 rounded">
+      <p><strong>Sunday, Jul 20:</strong> Partly cloudy, high 90°F, low 70°F, SSE wind 5-10 mph, 0% chance of showers. Evening: Partly cloudy, 70°F, SSE winds 5-10 mph.</p>
+    </div>
+    <div class="bg-orange-100 p-4 rounded">
+      <p><strong>Monday, Jul 21:</strong> Partly cloudy, high 88°F, low 73°F, S wind 10-15 mph, 0% chance of showers. Evening: Cloudy, 73°F, SSE winds 5-10 mph.</p>
+    </div>
+  </div>
+</section>
 
-                    let html = `<strong>Current:</strong><br>Temp: ${curr.temperature_2m}°C | Hum: ${curr.relative_humidity_2m}% | Wind: ${kmhToMph(curr.wind_speed_10m)} MPH from ${curr.wind_direction_10m}° | Rain Prob: ${curr.precipitation_probability}% | Storms: ${isStorm(curr.weather_code)}<br><br>`;
+  
 
-                    html += `<strong>7-Day Outlook:</strong><ul>`;
-                    for (let i = 0; i < 7; i++) {
-                        const date = new Date(daily.time[i]).toLocaleDateString();
-                        const dayStart = i * 24;
-                        const dayWinds = hourly.wind_speed_10m.slice(dayStart, dayStart + 24).map(kmhToMph);
-                        const windMin = Math.min(...dayWinds);
-                        const windMax = Math.max(...dayWinds);
-                        html += `<li>${date}: High ${daily.temperature_2m_max[i]}°C / Low ${daily.temperature_2m_min[i]}°C | Rain Prob Max ${daily.precipitation_probability_max[i]}% | Wind Min-Max ${windMin}-${windMax} MPH | Storms: ${isStorm(daily.weather_code[i])}</li>`;
-                    }
-                    html += `</ul><br><strong>Nightly Summaries (7-11pm):</strong><ul>`;
+  
+  
+    © 2025 StrumCity Outdoors. Stay safe and enjoy the outdoors!
+  
 
-                    for (let day = 0; day < 7; day++) {
-                        let temps = [], winds = [], probs = [], hasStorm = false;
-                        const dayStart = day * 24;
-                        for (let h = 19; h <= 23; h++) {
-                            const idx = dayStart + h;
-                            if (idx < hourly.time.length) {
-                                temps.push(hourly.temperature_2m[idx]);
-                                winds.push(kmhToMph(hourly.wind_speed_10m[idx]));
-                                probs.push(hourly.precipitation_probability[idx]);
-                                if (hourly.weather_code[idx] >= 95 && hourly.weather_code[idx] <= 99) hasStorm = true;
-                            }
-                        }
-                        if (temps.length > 0) {
-                            const avgTemp = (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(1);
-                            const maxWind = Math.max(...winds).toFixed(1);
-                            const avgProb = (probs.reduce((a, b) => a + b, 0) / probs.length).toFixed(1);
-                            const nightDate = new Date(daily.time[day]).toLocaleDateString();
-                            html += `<li>Night of ${nightDate}: Avg Temp ${avgTemp}°C | Max Wind ${maxWind} MPH | Rain Prob Avg ${avgProb}% | Storms: ${hasStorm ? 'Yes' : 'No'}</li>`;
-                        }
-                    }
-                    html += '</ul>';
-                    document.querySelector(`#${sectionId} p`).innerHTML = html;
-                }).catch(() => document.querySelector(`#${sectionId} p`).innerHTML = 'Weather ghosted – try again!');
-        }
-        getWeather(30.59, -95.13, 'coldspring');
-        getWeather(30.35, -95.56, 'conroe');
+  
+    // Function to fetch and update weather data
+    async function fetchWeatherData() {
+      try {
+        // Your OpenWeatherMap API key
+        const apiKey = '8c00377765cabbbe86c2b19725972a86';
+        // Coordinates for Lake Conroe (Conroe, TX) and Coldspring, TX
+        const conroeLat = 30.3119;
+        const conroeLon = -95.4561;
+        const coldspringLat = 30.5909;
+        const coldspringLon = -95.1292;
 
-        // Offshore
-        Promise.all([
-            fetch(proxy + encodeURIComponent('https://www.ndbc.noaa.gov/data/realtime2/42019.txt')).then(res => res.text()),
-            fetch('https://api.open-meteo.com/v1/forecast?latitude=27.91&longitude=-95.35&hourly=wind_speed_10m,wind_direction_10m,precipitation_probability,weather_code&forecast_days=3&timezone=America%2FChicago').then(res => res.json()),
-            fetch('https://api.open-meteo.com/v1/marine?latitude=27.91&longitude=-95.35&hourly=wave_height,wind_wave_direction&forecast_days=3&timezone=America%2FChicago').then(res => res.json())
-        ]).then(([buoyText, forecastData, waveData]) => {
-            const lines = buoyText.split('\n');
-            const data = lines[2].trim().split(/\s+/);
-            const waveHt = data[8];
-            const domPd = data[9];
-            const windSpd = (data[6] * 2.23694).toFixed(1);
-            const windDir = data[5];
-            const gust = (data[7] * 2.23694).toFixed(1);
-            const waterTemp = data[12];
-            const time = `${data[0]}-${data[1]}-${data[2]} ${data[3]}:${data[4]} UTC`;
-            let html = `<strong>Current (Real-Time):</strong><br>Wave Height: ${waveHt} m | Period: ${domPd} s | Wind: ${windSpd} MPH from ${windDir}° (Gust ${gust} MPH) | Water Temp: ${waterTemp}°C (as of ${time}).<br><br>`;
+        // Fetch current weather for Lake Conroe
+        const conroeResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${conroeLat}&lon=${conroeLon}&units=imperial&appid=${apiKey}`);
+        const conroeData = await conroeResponse.json();
+        updateCurrentWeather('conroe', conroeData);
 
-            html += `<strong>Next 3 Nights (7-11pm):</strong><ul>`;
-            const hourlyWind = forecastData.hourly;
-            const hourlyWave = waveData.hourly;
-            const isStorm = (code) => code >= 95 && code <= 99 ? 'Yes' : 'No';
-            for (let day = 0; day < 3; day++) {
-                let winds = [], waveHts = [], probs = [], hasStorm = false;
-                const dayStart = day * 24;
-                for (let h = 19; h <= 23; h++) {
-                    const idx = dayStart + h;
-                    if (idx < hourlyWind.time.length) {
-                        winds.push((hourlyWind.wind_speed_10m[idx] * 0.621371).toFixed(1));
-                        waveHts.push(hourlyWave.wave_height[idx]);
-                        probs.push(hourlyWind.precipitation_probability[idx]);
-                        if (hourlyWind.weather_code[idx] >= 95 && hourlyWind.weather_code[idx] <= 99) hasStorm = true;
-                    }
-                }
-                if (winds.length > 0) {
-                    const avgWind = (winds.reduce((a, b) => parseFloat(a) + parseFloat(b), 0) / winds.length).toFixed(1);
-                    const avgWave = (waveHts.reduce((a, b) => a + b, 0) / waveHts.length).toFixed(1);
-                    const avgProb = (probs.reduce((a, b) => a + b, 0) / probs.length).toFixed(1);
-                    const nightDate = new Date(hourlyWind.time[day * 24]).toLocaleDateString();  // Fallback date
-                    html += `<li>Night of ${nightDate}: Avg Wind ${avgWind} MPH | Avg Wave Height ${avgWave} m | Rain Prob Avg ${avgProb}% | Storms: ${hasStorm ? 'Yes' : 'No'}</li>`;
-                }
-            }
-            html += '</ul>';
-            document.querySelector('#freeport p').innerHTML = html;
-        }).catch(() => document.querySelector('#freeport p').innerHTML = 'Offshore data dipped out – refresh!');
-    </script>
-</body>
-</html>
+        // Fetch current weather for Coldspring
+        const coldspringResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${coldspringLat}&lon=${coldspringLon}&units=imperial&appid=${apiKey}`);
+        const coldspringData = await coldspringResponse.json();
+        updateCurrentWeather('coldspring', coldspringData);
+
+        // Note: Check lakadata.traweb.net for API endpoint for dam flow data
+        // Example: const damResponse = await fetch('https://lakadata.traweb.net/api/flow');
+        // Update DOM with dam data if available
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+        document.getElementById('conroe-current').textContent = 'Error loading conditions';
+        document.getElementById('coldspring-current').textContent = 'Error loading conditions';
+      }
+    }
+
+    // Function to update current weather in DOM
+    function updateCurrentWeather(city, data) {
+      const currentElement = document.getElementById(`${city}-current`);
+      const condition = data.weather[0].description;
+      const temp = Math.round(data.main.temp);
+      const windSpeed = Math.round(data.wind.speed);
+      const precipChance = data.rain ? Math.round(data.rain['1h'] * 100) : 0;
+      currentElement.textContent = `${condition.charAt(0).toUpperCase() + condition.slice(1)}, ${temp}°F, wind at ${windSpeed} mph, ${precipChance}% chance of showers`;
+    }
+
+    // Fetch data on page load
+    fetchWeatherData();
+
+    // Schedule updates every 6 hours
+    setInterval(fetchWeatherData, 6 * 60 * 60 * 1000);
+  
+
