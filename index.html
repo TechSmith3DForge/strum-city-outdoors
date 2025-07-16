@@ -1,193 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StrumCity Outdoors - Weather & Lake Info</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-      body {
-        background-image: linear-gradient(to bottom, rgba(0, 128, 0, 0.5), rgba(0, 0, 255, 0.3)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-        background-size: cover;
-        background-attachment: fixed;
-      }
-      .partner-card {
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .partner-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      }
-      .partners-section {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0,0.4)), url('https://images.unsplash.com/photo-1622239505860-3c83a7a923d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-        background-size: cover;
-        background-position: center;
-      }
-      .header-banner {
-        background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(50,205,50,0.5)), url('https://images.unsplash.com/photo-1519046921377-7e22b27d4087?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-        background-size: cover;
-        background-position: center;
-      }
-      .radar-iframe {
-        width: 100%;
-        height: 400px;
-        border: none;
-      }
-      .border-gradient {
-        border-width: 2px;
-        border-style: solid;
-        border-image: linear-gradient(to right, black, lime) 1;
-      }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StrumCity Outdoors - Weather & Lake Info</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="text-gray-800 font-sans">
-  <header class="header-banner text-white py-16 text-center">
-    <h1 class="text-4xl font-bold mb-2" style="font-family: 'Dancing Script', cursive;">StrumCity Outdoors</h1>
-    <p class="text-xl">Captain Johnny’s Tournament Weather Check-in!</p>
+<body class="bg-cover bg-fixed">
+  <header class="header-banner py-12 text-center text-white">
+    <h1 class="text-4xl md:text-5xl font-bold" style="font-family: 'Dancing Script', cursive;">StrumCity Outdoors</h1>
+    <p class="text-xl mt-2">Captain Johnny’s Tournament Weather Check-in!</p>
   </header>
 
-  <section class="partners-section py-12 text-white">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-semibold mb-8 text-center" style="font-family: 'Dancing Script', cursive;">Our Partners & Affiliates</h2>
+  <main class="container mx-auto px-4 py-8">
+    <section class="partners-section py-12 px-6 rounded-lg text-white mb-12">
+      <h2 class="text-3xl font-semibold mb-6 text-center" style="font-family: 'Dancing Script', cursive;">Our Partners & Affiliates</h2>
       <p class="text-center mb-8">Discover our trusted partners for outdoor adventures and unique creations!</p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="partner-card bg-white bg-opacity-80 p-6 rounded-lg shadow-md text-gray-800 text-center">
-          <h3 class="text-xl font-bold mb-2">StrumCity Bowfishing</h3>
+        <a href="https://www.strumcitybowfishing.com" class="partner-card bg-white bg-opacity-80 p-6 rounded-lg text-center shadow-lg hover:bg-opacity-90">
+          <h3 class="text-xl font-semibold">StrumCity Bowfishing</h3>
           <p>Join thrilling bowfishing adventures on the water!</p>
-        </div>
-        <div class="partner-card bg-white bg-opacity-80 p-6 rounded-lg shadow-md text-gray-800 text-center">
-          <h3 class="text-xl font-bold mb-2">Custom Wood Creations</h3>
+        </a>
+        <a href="https://www.customwoodcreations.com" class="partner-card bg-white bg-opacity-80 p-6 rounded-lg text-center shadow-lg hover:bg-opacity-90">
+          <h3 class="text-xl font-semibold">Custom Wood Creations</h3>
           <p>Handcrafted woodwork for your home and beyond.</p>
-        </div>
-        <div class="partner-card bg-white bg-opacity-80 p-6 rounded-lg shadow-md text-gray-800 text-center">
-          <h3 class="text-xl font-bold mb-2">TechSmith 3D Forge</h3>
+        </a>
+        <a href="https://www.techsmith3dforge.com" class="partner-card bg-white bg-opacity-80 p-6 rounded-lg text-center shadow-lg hover:bg-opacity-90">
+          <h3 class="text-xl font-semibold">TechSmith 3D Forge</h3>
           <p>Cutting-edge 3D printing and tech solutions.</p>
-        </div>
-        <div class="partner-card bg-white bg-opacity-80 p-6 rounded-lg shadow-md text-gray-800 text-center">
-          <h3 class="text-xl font-bold mb-2">StrumCity Outdoors</h3>
+        </a>
+        <a href="https://www.strumcityoutdoors.com" class="partner-card bg-white bg-opacity-80 p-6 rounded-lg text-center shadow-lg hover:bg-opacity-90">
+          <h3 class="text-xl font-semibold">StrumCity Outdoors</h3>
           <p>Your go-to for weather and lake updates!</p>
-        </div>
+        </a>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="mb-12 bg-white bg-opacity-90 rounded-lg shadow-lg p-6 border-gradient">
-    <h2 class="text-2xl font-semibold mb-4"><a href="https://www.lakeconroe.com/lake-livingston-dam-flow-rate/" target="_blank" class="text-blue-600 hover:underline">Click here for Lake Livingston Dam flow rate</a></h2>
-  </section>
+    <section class="text-center mb-12">
+      <a href="https://www.waterdatafortexas.org/reservoirs/lake-livingston" class="text-blue-600 hover:underline text-xl">Click here for Lake Livingston Dam flow rate</a>
+    </section>
 
-  <section class="mb-12 bg-white bg-opacity-90 rounded-lg shadow-lg p-6 border-gradient">
-    <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Dancing Script', cursive;">Lake Conroe, TX Weather</h2>
-    <div class="mb-4">
-      <h3 class="text-xl font-medium">Current Conditions</h3>
-      <p id="conroe-current">Loading current conditions...</p>
-      <a href="https://www.wunderground.com/weather/us/tx/conroe" class="text-blue-600 hover:underline">More details</a>
-    </div>
-    <div class="mb-4">
-      <h3 class="text-xl font-medium">24-Hour Radar Loop</h3>
-      <iframe class="radar-iframe" src="https://www.wunderground.com/maps/radar/current/hgx?lat=30.3102&lon=-95.4560&zoom=10"></iframe>
-    </div>
-    <h3 class="text-xl font-medium mb-2">7-Day Forecast</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="conroe-forecast"></div>
-  </section>
+    <section class="mb-12 bg-white bg-opacity-90 rounded-lg shadow-lg p-6 border-2 border-gradient-to-r from-black to-lime-500">
+      <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Dancing Script', cursive;">Lake Conroe, TX Weather</h2>
+      <div class="mb-4">
+        <h3 class="text-xl font-medium">Current Conditions</h3>
+        <p id="conroe-current">Loading current conditions...</p>
+        <a href="https://www.wunderground.com/weather/us/tx/conroe" class="text-blue-600 hover:underline">More details</a>
+      </div>
+      <div class="mb-4">
+        <h3 class="text-xl font-medium">24-Hour Radar Loop</h3>
+        <iframe class="radar-iframe" src="https://www.wunderground.com/maps/radar/current/hgx?lat=30.3106&lon=-95.4563&zoom=10"></iframe>
+      </div>
+      <h3 class="text-xl font-medium mb-2">7-Day Forecast</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="conroe-forecast"></div>
+    </section>
 
-  <section class="mb-12 bg-white bg-opacity-90 rounded-lg shadow-lg p-6 border-gradient">
-    <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Dancing Script', cursive;">Coldspring, TX Weather</h2>
-    <div class="mb-4">
-      <h3 class="text-xl font-medium">Current Conditions</h3>
-      <p id="coldspring-current">Loading current conditions...</p>
-      <a href="https://www.wunderground.com/weather/us/tx/coldspring" class="text-blue-600 hover:underline">More details</a>
-    </div>
-    <div class="mb-4">
-      <h3 class="text-xl font-medium">24-Hour Radar Loop</h3>
-      <iframe class="radar-iframe" src="https://www.wunderground.com/maps/radar/current/hgx?lat=30.5909&lon=-95.1292&zoom=10"></iframe>
-    </div>
-    <h3 class="text-xl font-medium mb-2">7-Day Forecast</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coldspring-forecast"></div>
-  </section>
+    <section class="mb-12 bg-white bg-opacity-90 rounded-lg shadow-lg p-6 border-2 border-gradient-to-r from-black to-lime-500">
+      <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Dancing Script', cursive;">Coldspring, TX Weather</h2>
+      <div class="mb-4">
+        <h3 class="text-xl font-medium">Current Conditions</h3>
+        <p id="coldspring-current">Loading current conditions...</p>
+        <a href="https://www.wunderground.com/weather/us/tx/coldspring" class="text-blue-600 hover:underline">More details</a>
+      </div>
+      <div class="mb-4">
+        <h3 class="text-xl font-medium">24-Hour Radar Loop</h3>
+        <iframe class="radar-iframe" src="https://www.wunderground.com/maps/radar/current/hgx?lat=30.5909&lon=-95.1292&zoom=10"></iframe>
+      </div>
+      <h3 class="text-xl font-medium mb-2">7-Day Forecast</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coldspring-forecast"></div>
+    </section>
+  </main>
 
-  <script>
-    const API_KEY = 'b96d1795974c5067c41ff44db01966ed';
-    const UNITS = 'imperial';
-    const CACHE_TIME = 3600000; // 1 hour in ms
-
-    async function fetchWeather(lat, lon, currentElem, forecastElem) {
-      const cacheKey = `weather_${lat}_${lon}`;
-      const cached = localStorage.getItem(cacheKey);
-      const now = Date.now();
-
-      if (cached) {
-        const { data, timestamp } = JSON.parse(cached);
-        if (now - timestamp < CACHE_TIME) {
-          updateUI(data, currentElem, forecastElem);
-          return;
-        }
-      }
-
-      try {
-        const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&units=${UNITS}&appid=${API_KEY}`;
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Weather fetch failed');
-        const data = await response.json();
-        localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: now }));
-        updateUI(data, currentElem, forecastElem);
-      } catch (error) {
-        currentElem.innerHTML = 'Failed to load weather—check API key or quota.';
-        forecastElem.innerHTML = '<p class="text-red-600">Error loading forecast.</p>';
-      }
-    }
-
-    function updateUI(data, currentElem, forecastElem) {
-      // Current conditions
-      const current = data.current;
-      const desc = current.weather[0].description;
-      const temp = Math.round(current.temp);
-      const windSpeed = Math.round(current.wind_speed);
-      const windDir = degToCompass(current.wind_deg);
-      currentElem.innerHTML = `${desc.capitalize()}, ${temp}°F, Wind: ${windDir} ${windSpeed} mph`;
-
-      // 7-day forecast
-      forecastElem.innerHTML = '';
-      data.daily.slice(0, 7).forEach((day) => {
-        const date = new Date(day.dt * 1000);
-        const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
-        const monthDay = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        const dayDesc = day.weather[0].description;
-        const high = Math.round(day.temp.max);
-        const low = Math.round(day.temp.min);
-        const pop = Math.round(day.pop * 100);
-        const dayWindSpeed = Math.round(day.wind_speed);
-        const dayWindDir = degToCompass(day.wind_deg);
-        const eveTemp = Math.round(day.temp.eve);
-
-        let bgClass = 'bg-green-100';
-        if (pop > 21 || dayWindSpeed >= 10) bgClass = 'bg-orange-100';
-        if (pop > 50 || dayWindSpeed >= 15) bgClass = 'bg-red-100';
-
-        const forecastItem = `
-          <div class="${bgClass} p-4 rounded">
-            <p><strong>${dayName}, ${monthDay}:</strong> ${dayDesc.capitalize()}, high ${high}°F, low ${low}°F, ${dayWindDir} wind ${dayWindSpeed} mph, ${pop}% chance of showers. Evening (7pm-11pm): ${dayDesc.capitalize()}, ${eveTemp}°F, ${dayWindDir} winds ${dayWindSpeed} mph.</p>
-          </div>
-        `;
-        forecastElem.innerHTML += forecastItem;
-      });
-    }
-
-    function degToCompass(deg) {
-      const val = Math.floor((deg / 22.5) + 0.5);
-      const dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
-      return dirs[val % 16];
-    }
-
-    String.prototype.capitalize = function() {
-      return this.charAt(0).toUpperCase() + this.slice(1);
-    };
-
-    // Fetch for Lake Conroe
-    fetchWeather(30.3102, -95.4560, document.getElementById('conroe-current'), document.getElementById('conroe-forecast'));
-
-    // Fetch for Coldspring
-    fetchWeather(30.5909, -95.1292, document.getElementById('coldspring-current'), document.getElementById('coldspring-forecast'));
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
